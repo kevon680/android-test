@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.example.test.dao.DatabaseHelper;
 import com.example.test.model.Account;
+import com.example.test.model.Order;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 
 public class MainActivity extends Activity {
@@ -43,7 +44,7 @@ public class MainActivity extends Activity {
         if (name != null && name != "") {
           Account account = new Account(name, pass);
           try {
-            getHelper().getDao().create(account);
+            getHelper().getAccountDao().create(account);
             updateList();
           } catch (SQLException e) {
             e.printStackTrace();
@@ -61,17 +62,22 @@ public class MainActivity extends Activity {
     DatabaseHelper dbHelper = getHelper();
     
     try {
-      List<Account> accounts = dbHelper.getDao().queryForAll();
+      List<Account> accounts = dbHelper.getAccountDao().queryForAll();
       ListView view = (ListView)findViewById(R.id.listView1);
       List<Map<String, String>> data = new ArrayList<Map<String,String>>();
       for (Account account : accounts) {
         Map<String, String> dataItem = new HashMap<String, String>();
         dataItem.put("name", account.getName());
-        dataItem.put("pass", account.getPassword());
+        
+        List<Order> orders = dbHelper.getOrdersByAccount(account);
+        if (!orders.isEmpty()){          
+          dataItem.put("trackingCode", orders.get(0).getTrackingCode());
+        }
+        
         data.add(dataItem);
       }
       
-      view.setAdapter(new SimpleAdapter(this, data, android.R.layout.simple_list_item_2, new String[] {"name", "pass"}, new int[] {android.R.id.text1,android.R.id.text2}));
+      view.setAdapter(new SimpleAdapter(this, data, android.R.layout.simple_list_item_2, new String[] {"name", "trackingCode"}, new int[] {android.R.id.text1,android.R.id.text2}));
       
     } catch (SQLException e) {
       e.printStackTrace();
