@@ -18,11 +18,19 @@ function displayAccounts(){
 
 //document is ready
 $(function() {
-	$("#submit").click(function(){
-		var name = $("#name").val();
-		var pass = $("#pass").val();
-		addAccount(name, pass);
-		displayAccounts();
+	$("#submit").click(function(evt){
+		evt.preventDefault();
+		var name = $.trim($("#name").val());
+		var pass = $.trim($("#pass").val());
+		if (name != "" && pass != ""){
+		 addAccount(name, pass);
+		 displayAccounts();
+		 $("#name").val("");
+		 $("#pass").val("");
+		} else {
+		  showAndroidToast("Name and Password cannot be blank");
+		}
+		
 	});
 	displayAccounts();
 });
