@@ -4,6 +4,11 @@
 package com.example.test.web;
 
 import java.sql.SQLException;
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.content.Context;
 import android.webkit.JavascriptInterface;
@@ -38,6 +43,7 @@ public class WebAppInterface {
 	}
 
 	/* TODO: return boolean OR JSON string */
+	@JavascriptInterface
 	public void addAccount(String name, String pass) {
 		Account account = new Account(name, pass);
 		try {
@@ -47,6 +53,26 @@ public class WebAppInterface {
 			e.printStackTrace();
 			showToast("Error adding User");
 		}
+	}
+	
+	@JavascriptInterface
+	public String getAllAccounts(){
+		List<Account> accounts;
+		try {
+			accounts = this.databaseHelper.getAccountDao().queryForAll();
+			JSONArray array = new JSONArray();
+			for (Account account : accounts) {
+				array.put(account.toJSONObject());
+			}
+			return array.toString();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			showToast("Error getting existing accounts");
+		} catch (JSONException e) {
+			e.printStackTrace();
+			showToast("Error getting existing accounts");
+		}
+		return "";
 	}
 
 }

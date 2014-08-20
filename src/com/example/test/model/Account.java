@@ -5,6 +5,9 @@
  */
 package com.example.test.model;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -38,5 +41,12 @@ public class Account {
   }
   public void setPassword(String password) {
       this.password = password;
+  }
+  
+  public JSONObject toJSONObject() throws JSONException{
+	  JSONObject obj = new JSONObject();
+	  obj.put("name", getName());
+	  obj.put("password", getPassword());
+	  return obj;
   }
 }

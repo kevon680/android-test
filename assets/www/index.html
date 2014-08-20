@@ -6,10 +6,25 @@
 <script src="./js/bootstrap.min.js"></script>
 <script src="./js/common.js"></script>
 </head>
-<body>
+<body class="col-lg-12">
 <h1>Hello World</h1>
-<div>Please enter user details:</div>
-<!-- TODO label and text field to call Android.addAccount -->
-<button class="btn btn-lg btn-default" id="toast" onClick="showAndroidToast('Hello Android!')">Toast!</button>
+
+<form class="" role="form">
+	<div>Please enter user details:</div>
+	<div>Name</div>
+    <div class="input-group input-group-lg">
+      <input id="name" class="form-control" placeholder="Username" type="text">
+    </div>
+    <br>
+    <div>Password</div>
+    <div class="input-group  input-group-lg">
+      <input id="pass" class="form-control" placeholder="Password" type="password">
+    </div>
+    <br>
+<button class="btn btn-lg btn-primary" id="submit">Add</button>
+  </form>
+
+<h2>Existing Accounts:</h2>
+<div id="msg"></div>
 </body>
 </html>
